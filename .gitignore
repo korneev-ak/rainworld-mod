@@ -1,0 +1,6 @@
+Properties/
+bin/
+obj/
+.vs/
+spearmaster swallow/plugins/MyMod.pdb
+MyMod.sln

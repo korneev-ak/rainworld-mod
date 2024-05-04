@@ -1,0 +1,10 @@
+{
+  "id": "abc.abc",
+  "name": "spearmaster can swallow",
+  "version": "1.0.0",
+  "authors": "abc",
+  "description": "shift + up to swallow and regurgitate as spearmaster",
+  "requirements": [],
+  "requirements_names": [],
+  "checksum_override_version": true
+}
