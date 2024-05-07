@@ -26,9 +26,21 @@ namespace MyMod
         {
             On.Player.Update += Player_update;
             On.Player.Regurgitate += Player_regurgitate;
-            
-            
+            On.Player.CanBeSwallowed += Player_canBeSwallowed;              
+        }        
 
+        private bool Player_canBeSwallowed(On.Player.orig_CanBeSwallowed orig, Player self, PhysicalObject testObj)
+        {
+
+            if (!(testObj is Rock) && !(testObj is DataPearl) && !(testObj is FlareBomb) && !(testObj is Lantern) && !(testObj is FirecrackerPlant) && (!(testObj is VultureGrub) || (testObj as VultureGrub).dead) && (!(testObj is Hazer) || (testObj as Hazer).dead || (testObj as Hazer).hasSprayed) && !(testObj is FlyLure) && !(testObj is ScavengerBomb) && !(testObj is PuffBall) && !(testObj is SporePlant) && !(testObj is BubbleGrass) && (!(testObj is SSOracleSwarmer) || self.FoodInStomach < self.MaxFoodInStomach) && !(testObj is NSHSwarmer) && !(testObj is OverseerCarcass) && (!ModManager.MSC || !(testObj is FireEgg) || self.FoodInStomach < self.MaxFoodInStomach))
+            {
+                if (ModManager.MSC && testObj is SingularityBomb && !(testObj as SingularityBomb).activateSingularity)
+                {
+                    return !(testObj as SingularityBomb).activateSucktion;
+                }
+                return false;
+            }
+            return true;
         }
 
         //replaces Player's Regurgitate() with only change of first condition
@@ -127,7 +139,7 @@ namespace MyMod
             
             
             if (self.input[0].y == 1 && self.input[0].pckp==true && self.SlugCatClass==MoreSlugcatsEnums.SlugcatStatsName.Spear)
-            {
+            {                
                 self.swallowAndRegurgitateCounter = SAndRCounter;
                 if (self.objectInStomach == null)
                 {
@@ -140,6 +152,7 @@ namespace MyMod
                                 self.SwallowObject(i);
                                 self.swallowAndRegurgitateCounter = 0;
                             }
+                            self.swallowAndRegurgitateCounter++;
                         }
                     }                    
                 }
@@ -151,14 +164,9 @@ namespace MyMod
                         self.Regurgitate();
                         wantToRegurgitate = false;
                         self.swallowAndRegurgitateCounter = 0;
-
                     }
-                }
-                self.swallowAndRegurgitateCounter++;
-
-
-
-                
+                    self.swallowAndRegurgitateCounter++;
+                }         
             }
             SAndRCounter = self.swallowAndRegurgitateCounter;
 
